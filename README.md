@@ -8,14 +8,14 @@
 
 *Actual local run of the restored demo. The original [README](UPSTREAM.md), [animated example](demo.gif) and MIT notices are retained.*
 
-This guide covers the `faithful-upstream` branch in [PR #1](https://github.com/Zontafor/luxleaf-glass-ui/pull/1). For the published React/TypeScript package, use the [main-branch guide](https://github.com/Zontafor/luxleaf-glass-ui/blob/main/README.md). The source here exposes the original browser globals, not the scoped package imports.
+The complete pinned implementation is now on private `main`, with its original package names, source and license notices. The previously published `@zontafor/luxleaf-glass-ui` package is a separate earlier implementation; its [historical package guide](https://github.com/Zontafor/luxleaf-glass-ui/blob/8c3b9d6f2eec14eb27a4ae8b370fb89847387425/README.md) is preserved at that revision. This restoration does not publish a new registry package.
 
 ## Quick start
 
 No package build is required for this original HTML/JavaScript demo.
 
 ```sh
-git clone --branch faithful-upstream https://github.com/Zontafor/luxleaf-glass-ui.git
+git clone https://github.com/Zontafor/luxleaf-glass-ui.git
 cd luxleaf-glass-ui
 python3 -m http.server 8080 --bind 127.0.0.1
 ```
