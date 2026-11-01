@@ -1,4 +1,4 @@
-# Rebuild provenance — v0.2.0
+# Rebuild provenance — v0.2.1
 
 The unmodified source tree is preserved under `foundations/liquid-glass-js`. `foundations/manifest.json` records the pinned revision and SHA-256 of every preserved file. `npm run verify:foundation` detects drift. These files retain their original authorship and licenses. Changes used at runtime are outside that reference tree and documented in source/build scripts.
 

@@ -18,6 +18,25 @@ document.querySelector("#run")!.addEventListener("click", async () => {
   }
 });
 async function run() {
+  const backdrop = document.createElement("div");
+  backdrop.style.cssText =
+    "position:fixed;left:80px;top:100px;width:40px;height:40px;background:rgb(204,20,30)";
+  document.body.append(backdrop);
+  try {
+    const captured = await captureBackdrop(backdrop),
+      pixel = captured.getContext("2d")!.getImageData(20, 20, 1, 1).data;
+    check(
+      "explicit capture preserves chosen backdrop colors",
+      captured.width === 40 &&
+        pixel[0] === 204 &&
+        pixel[1] === 20 &&
+        pixel[2] === 30,
+    );
+  } finally {
+    backdrop.remove();
+    Container.captureRoot = null;
+  }
+
   const snapshot = document.createElement("canvas");
   snapshot.width = innerWidth;
   snapshot.height = innerHeight;
@@ -72,7 +91,8 @@ async function run() {
     );
     check(
       "optical output has visible pixels",
-      pixels.some((v, i) => i % 4 === 3 && v > 0),
+      pixels.some((v, i) => i % 4 === 3 && v > 0) &&
+        pixels.some((v, i) => i % 4 !== 3 && v > 0 && v < 250),
     );
     button.element.dispatchEvent(
       new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),

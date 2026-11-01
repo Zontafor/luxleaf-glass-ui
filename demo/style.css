@@ -186,7 +186,7 @@ footer {
   background: #102a2240;
 }
 .glass-scene {
-  height: 100%;
+  height: 460px;
   position: relative;
   background: linear-gradient(135deg, #1b665a, #183b41 55%, #25263c);
   padding: 1px;

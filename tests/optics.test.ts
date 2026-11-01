@@ -40,3 +40,25 @@ test("invalid constructor inputs fail before creating DOM or GPU state", () => {
     assert.throws(() => new Container(options as any), /Invalid/);
   assert.throws(() => new Button({ size: Infinity }), /Invalid/);
 });
+
+test("capture-root coordinates do not include unrelated page offsets", () => {
+  const old = Container.captureRoot;
+  try {
+    Container.captureRoot = {
+      getBoundingClientRect: () => ({ left: 80, top: 120 }),
+    } as any;
+    const position = (Container.prototype as any).getPosition.call({
+      canvas: {
+        getBoundingClientRect: () => ({
+          left: 100,
+          top: 150,
+          width: 40,
+          height: 60,
+        }),
+      },
+    });
+    assert.deepEqual(position, { x: 40, y: 60 });
+  } finally {
+    Container.captureRoot = old;
+  }
+});

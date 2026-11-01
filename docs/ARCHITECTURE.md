@@ -1,4 +1,4 @@
-# Architecture — v0.2.0
+# Architecture — v0.2.1
 
 ### Optical foundation
 

@@ -1,4 +1,4 @@
-# Capability matrix — v0.2.0
+# Capability matrix — v0.2.1
 
 ### Optical foundation
 

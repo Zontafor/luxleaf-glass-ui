@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 — 2026-11-01
+
+- Keep refraction coordinates relative to the explicitly captured root and stabilize the workbench capture size.
+- Avoid division by zero when blur is disabled; verify real RGB output and DOM backdrop capture.
+
+
 ## 0.2.0 — 2026-11-01
 
 - Optical foundation: The complete 13-file MIT reference is preserved. `/webgl` adapts its actual Container/Button shaders and parent-texture sampling; this is an optical renderer, not only CSS backdrop blur.

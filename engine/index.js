@@ -282,9 +282,12 @@ export class Container {
   getPosition() {
     // Get actual screen position using getBoundingClientRect
     const rect = this.canvas.getBoundingClientRect();
+    const origin = (
+      Container.captureRoot || document.body
+    ).getBoundingClientRect();
     return {
-      x: rect.left + rect.width / 2,
-      y: rect.top + rect.height / 2,
+      x: rect.left - origin.left + rect.width / 2,
+      y: rect.top - origin.top + rect.height / 2,
     };
   }
 
@@ -528,7 +531,7 @@ export class Container {
         // Gaussian blur
         vec4 color = vec4(0.0);
         vec2 texelSize = 1.0 / u_textureSize;
-        float sigma = u_blurRadius / 2.0;
+        float sigma = max(u_blurRadius / 2.0, 0.0001);
         vec2 blurStep = texelSize * sigma;
         
         float totalWeight = 0.0;
@@ -764,7 +767,7 @@ export class Container {
       gl.clear(gl.COLOR_BUFFER_BIT);
 
       // Update scroll position
-      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollY = 0; // Positions are already relative to the captured root.
       gl.uniform1f(this.gl_refs.scrollYLoc, scrollY);
 
       // Update container position (in case it moved)
