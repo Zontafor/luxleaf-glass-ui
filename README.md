@@ -1,174 +1,103 @@
-# LuxLeaf Glass UI
+# LuxLeaf Glass UI — source guide
 
-**Build glass panels and buttons, from React surfaces to nested WebGL refraction.**
+**Explore the original glass containers, buttons and nested optical rendering.**
 
-[Quick start](#quick-start) · [Examples](#examples) · [API guide](#api-guide) · [Run the demos](#run-the-demos) · [Documentation](#documentation)
+[Quick start](#quick-start) · [Usage](#usage) · [Nested surfaces](#nested-surfaces) · [Controls](#controls) · [Verification](#verification)
 
-![LuxLeaf Glass UI running in the local advanced workbench](docs/images/workbench.jpg)
+![Original glass demo with warp enabled and blur adjusted](.luxleaf/images/glass-controls.jpg)
 
-*Actual package workbench. [View its source](demo/advanced.tsx); run `/advanced.html` using the instructions below. This is a screenshot, not a hosted live demo.*
+*Actual local run of the restored demo. The original [README](UPSTREAM.md), [animated example](demo.gif) and MIT notices are retained.*
 
-## At a glance
-
-- React panels and buttons with tint, blur, shape and border controls.
-- An optical Container/Button pipeline with real backdrop sampling and nested surfaces.
-- Typed optical settings, keyboard interaction and disabled-state support.
-- Explicit capture, context recovery and renderer cleanup.
-
-**Release covered:** `@zontafor/luxleaf-glass-ui@0.2.1` on `main`. [PR #1](https://github.com/Zontafor/luxleaf-glass-ui/pull/1) contains newer work; its [source-branch guide](https://github.com/Zontafor/luxleaf-glass-ui/blob/faithful-upstream/LUXLEAF.md) uses the APIs available on that branch. The examples below use the published package, unless explicitly labeled otherwise.
+This guide covers the `faithful-upstream` branch in [PR #1](https://github.com/Zontafor/luxleaf-glass-ui/pull/1). For the published React/TypeScript package, use the [main-branch guide](https://github.com/Zontafor/luxleaf-glass-ui/blob/main/README.md). The source here exposes the original browser globals, not the scoped package imports.
 
 ## Quick start
 
-Node 24+ for this repository; React 19 for React examples. The optical path requires WebGL and a captureable backdrop. The ordinary React components use CSS/SVG effects.
-
-### Install in an application
-
-Configure GitHub Packages authentication as described in the [release and registry guide](docs/RELEASING.md). Scope the registry to LuxLeaf so other dependencies continue to resolve from their normal registry:
+No package build is required for this original HTML/JavaScript demo.
 
 ```sh
-npm config set @zontafor:registry https://npm.pkg.github.com --location=project
-npm install @zontafor/luxleaf-glass-ui@0.2.1
-```
-
-Keep credentials outside committed source. [GitHub Releases](https://github.com/Zontafor/luxleaf-glass-ui/releases) also provide package archives; downloading an archive is separate from installing through the registry.
-
-### Try the repository locally
-
-```sh
-git clone https://github.com/Zontafor/luxleaf-glass-ui.git
+git clone --branch faithful-upstream https://github.com/Zontafor/luxleaf-glass-ui.git
 cd luxleaf-glass-ui
-npm ci --ignore-scripts
-npm run build
-npm run dev
+python3 -m http.server 8080 --bind 127.0.0.1
 ```
 
-Open the local address printed by Vite. React examples below belong in a React/TypeScript application; plain TypeScript examples run in a browser with a bundler.
+Open `http://localhost:8080`. Use a browser with WebGL. The original demo loads html2canvas and remote background images, so it is not an offline bundle.
 
-## Examples
+## Usage
 
-### React panel with an action
+Create `example.html` at the repository root and open it through the same local server:
 
-```tsx
-import { useState } from 'react';
-import { GlassPanel, GlassButton } from '@zontafor/luxleaf-glass-ui';
-
-export function WorkspaceCard() {
-  const [opened, setOpened] = useState(false);
-  return (
-    <section style={{ padding: 40, background: 'linear-gradient(135deg, #174b47, #816b7f)' }}>
-      <GlassPanel options={{ blur: 16, opacity: 0.2, radius: 24 }} style={{ padding: 28 }}>
-        <h2>Your workspace</h2>
-        <p role="status">{opened ? 'Workspace selected' : 'Ready when you are.'}</p>
-        <GlassButton options={{ shape: 'pill' }} onClick={() => setOpened(true)}>
-          Open workspace
-        </GlassButton>
-      </GlassPanel>
-    </section>
-  );
-}
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glass button example</title>
+  <link rel="stylesheet" href="glass.css">
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center;
+      background: linear-gradient(135deg, #174b47, #8e7395); }
+  </style>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="container.js"></script>
+  <script src="button.js"></script>
+  <script>
+    const action = new Button({
+      text: 'Open workspace', size: 24, type: 'pill', tintOpacity: 0.3,
+      onClick: () => console.info('Workspace selected')
+    });
+    document.body.appendChild(action.element);
+    action.updateSizeFromDOM();
+  </script>
+</body>
+</html>
 ```
 
-The panel and button inherit the backdrop beneath them. Native button semantics provide keyboard activation; use the normal `disabled` prop when needed.
+## Nested surfaces
 
-### Nested optical glass
+Inside the same script-loading setup, create a panel and attach child buttons:
 
-```ts
-import { Container, Button, captureBackdrop } from '@zontafor/luxleaf-glass-ui/webgl';
-import '@zontafor/luxleaf-glass-ui/webgl.css';
-
-export async function mountOpticalPanel(stage: HTMLElement) {
-  // Stage should already contain the backdrop you intend to capture.
-  stage.style.position = 'relative';
-  stage.style.minHeight = '280px';
-  await captureBackdrop(stage);
-
-  const panel = new Container({ borderRadius: 28, tintOpacity: 0.25 });
-  panel.element.style.cssText += ';position:absolute;left:8%;top:60px;width:84%;height:160px';
-  const button = new Button({
-    text: 'Open workspace', type: 'pill', size: 18,
-    onClick: () => console.info('Workspace selected'),
-  });
-  stage.append(panel.element);
-  panel.addChild(button);
-  panel.updateSizeFromDOM();
-  panel.updateControls({ blurRadius: 7, edgeIntensity: 0.02 });
-
-  return () => panel.destroy(); // Call when the view is removed.
-}
+```js
+const panel = new Container({ type: 'rounded', borderRadius: 24, tintOpacity: 0.3 });
+panel.element.style.width = '320px';
+panel.element.style.height = '160px';
+document.body.appendChild(panel.element);
+panel.addChild(new Button({ text: 'Play', size: 22, type: 'pill' }));
+panel.addChild(new Button({ text: '✓', size: 22, type: 'circle' }));
+panel.updateSizeFromDOM();
 ```
 
-Call `mountOpticalPanel(stage)` after the stage is mounted and its images/fonts have loaded. Capture a permitted, bounded element. The workbench demonstrates the required backdrop and layout.
+Children sample the parent container's rendered output. See [demo.js](demo.js) for the original page composition and [button.js](button.js) for nested button behavior. The source branch does not provide the additional cleanup and keyboard adapters found in the separate published LuxLeaf package.
 
-### Enhance an existing element
+## Controls
 
-```ts
-import { mountGlass } from '@zontafor/luxleaf-glass-ui';
+The original demo's control panel provides a direct way to inspect the effect:
 
-export function decorate(element: HTMLElement) {
-  const glass = mountGlass(element, { shape: 'pill', blur: 12, opacity: 0.18 });
-  glass.update({ tint: '#b7dba7', opacity: 0.25 });
-  return () => glass.destroy(); // Restores the element's original inline style.
-}
-```
-
-Use the DOM helper when a React component is unnecessary. This helper uses the CSS/SVG path, not the optical capture pipeline.
-
-## API guide
-
-| Entry or symbol | Purpose |
+| Control group | What changes |
 |---|---|
-| `GlassPanel / GlassButton` | React components; common options plus standard DOM props. |
-| `mountGlass(element, options)` | Returns update() and destroy() for an existing element. |
-| `/webgl: Container / Button` | Nested optical surfaces with addChild(), updateControls() and destroy(). |
-| `/webgl: captureBackdrop(root)` | Explicitly capture the chosen backdrop before mounting optical surfaces. |
-| `/webgl.css` | Styles required by optical containers and buttons. |
+| Edge, rim and base intensity | Refraction strength across the surface |
+| Edge, rim and base distance | Falloff of those effects |
+| Corner boost and ripple | Highlights and surface variation |
+| Blur and tint opacity | Background softness and surface tint |
+| Center warp | Distortion within the surface |
+| Hide buttons / randomize | Composition and effect comparisons |
 
-### Common options
+These demo controls are implemented in [controls.js](controls.js). The original [API reference](UPSTREAM.md#-api-reference) documents Container and Button options.
 
-| Option | Default | Accepted values |
-|---|---|---|
-| `tint` | `#d7f0e1` | Six-digit hex color |
-| `opacity / border` | `0.15 / 0.3` | 0–1 |
-| `blur` | `12` | 0–30 pixels |
-| `radius / refraction` | `24 / 8` | 0–100 / 0–30 |
-| `shape` | `rounded` | rounded, pill, circle |
-
-## Run the demos
-
-After `npm run dev`, append a route below to the local Vite address. These links point to checked-in source; GitHub does not execute the demos itself.
-
-| Local route | Example | Source |
-|---|---|---|
-| `/` | Compact example | [React entry](demo/main.tsx) |
-| `/advanced.html` | Full workbench shown above | [Workbench](demo/advanced.tsx) |
-| `/checks.html` | Base browser checks | [Check page](demo/checks.html) |
-| `/checks-expanded.html` | Expanded browser checks | [Check page](demo/checks-expanded.html) |
-
-## Development and verification
+## Verification
 
 ```sh
-npm run verify          # Type checks, tests, build, and foundation checks where defined
-npm run verify:package  # Inspect and import the built package archive
+node .luxleaf/verify-source.mjs
+node --check container.js
+node --check button.js
+node --check controls.js
+node --check demo.js
 ```
 
-Open the browser check pages separately and use their Run button. [Validation notes](docs/VALIDATION.md) distinguish automated checks, browser observations and remaining host verification. Passing checks does not certify complete upstream or cross-device parity.
+All 13 pinned source files pass the identity check. The original demo was opened locally and its warp and blur controls exercised. See [verification](.luxleaf/verification.json). This is not certification of every browser, layout or pixel output.
 
-### Integration notes
+## Source and license
 
-Backdrop capture is not a confidentiality boundary; choose its root deliberately. CSS/SVG and optical options are different APIs. Cross-browser pixel equivalence and high surface-count performance are not certified.
-
-## Documentation
-
-| Guide | What it covers |
-|---|---|
-| [Capabilities](docs/CAPABILITIES.md) | Implemented features and current limits |
-| [Architecture](docs/ARCHITECTURE.md) | Rendering, state and resource lifecycle |
-| [Validation](docs/VALIDATION.md) | Checks and their scope |
-| [Releases](docs/RELEASING.md) | Registry authentication, archives and release verification |
-| [Provenance](docs/PROVENANCE.md) | Foundation boundaries and original additions |
-| [Security](SECURITY.md) | Supported deployment assumptions |
-| [Changelog](CHANGELOG.md) | Release history |
-
-## License and attribution
-
-Original LuxLeaf code, documentation and examples are covered by the [proprietary license](LICENSE), copyright **Michelle L. Wu**. Included third-party software retains its own licenses and authorship; see [third-party notices](THIRD_PARTY_NOTICES.md). Public repository visibility does not grant rights beyond those licenses.
+Pinned revision: `78cb6ccb0b9987bb60a88b14ccbd13a9e6e8ab2a`. [Source manifest](.luxleaf/upstream-manifest.json). The original [MIT license](LICENSE), authorship and source documentation remain in place.

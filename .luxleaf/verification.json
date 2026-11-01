@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-01",
+  "scope": "local verification of pinned upstream tree",
+  "modifiedUpstreamFiles": 0,
+  "sourceFiles": 13,
+  "build": "Original project is unbundled HTML/JS/CSS; no package build script",
+  "browser": "Original demo opened locally, with its original control panel",
+  "notVerified": [
+    "Cross-browser screenshot equivalence",
+    "Self-contained/offline delivery of CDN dependencies"
+  ]
+}

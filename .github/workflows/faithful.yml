@@ -1,0 +1,24 @@
+name: Faithful source verification
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-and-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - name: Verify every pinned upstream file
+        run: node .luxleaf/verify-source.mjs
+      - name: Check original JavaScript syntax
+        run: |
+          node --check container.js
+          node --check button.js
+          node --check controls.js
+          node --check demo.js
