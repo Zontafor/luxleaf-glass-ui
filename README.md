@@ -8,7 +8,7 @@
 
 *Actual local run of the restored demo. The original [README](UPSTREAM.md), [animated example](demo.gif) and MIT notices are retained.*
 
-The complete pinned implementation is now on private `main`, with its original package names, source and license notices. The previously published `@zontafor/luxleaf-glass-ui` package is a separate earlier implementation; its [historical package guide](https://github.com/Zontafor/luxleaf-glass-ui/blob/8c3b9d6f2eec14eb27a4ae8b370fb89847387425/README.md) is preserved at that revision. This restoration does not publish a new registry package.
+The complete pinned implementation is available on public `main`, with its original package names, source and license notices. The previously published `@zontafor/luxleaf-glass-ui` package is a separate earlier implementation; its [historical package guide](https://github.com/Zontafor/luxleaf-glass-ui/blob/8c3b9d6f2eec14eb27a4ae8b370fb89847387425/README.md) is preserved at that revision. This restoration does not publish a new registry package.
 
 ## Quick start
 
