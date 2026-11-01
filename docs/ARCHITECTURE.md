@@ -1,3 +1,38 @@
+# Architecture — v0.2.0
+
+### Optical foundation
+
+The complete 13-file MIT reference is preserved. `/webgl` adapts its actual Container/Button shaders and parent-texture sampling; this is an optical renderer, not only CSS backdrop blur.
+
+### LuxLeaf controls
+
+Validated optical ranges, typed exports, a React adapter, keyboard interaction, disabled state, hierarchy cycle checks, explicit capture, context recovery and GPU/listener/timer disposal.
+
+### Two rendering paths
+
+The original CSS glass components remain available for ordinary UI. Optical surfaces use explicit permitted backdrop capture and exclude common editable/private elements.
+
+### Remaining host verification
+
+Backdrop capture is not a confidentiality boundary: the host must choose a permitted capture root. Cross-browser pixel equivalence, arbitrary nested reparenting and performance at high surface counts are not certified.
+
+## Processing flow
+
+```mermaid
+flowchart LR
+  Input[Host props or local files] --> Validate[Bounded validation]
+  Validate --> State[Owned state and resources]
+  State --> Render[Browser renderer]
+  Render --> Output[Canvas or export]
+  State --> Cleanup[Unmount / dispose]
+```
+
+## Foundation boundary
+
+LuxLeaf extension code lives in `src/` and the adapted optical engine in `engine/`. Permitted reference source is preserved separately where included. Host-specific adapters are separate entry points. The browser library does not supply application-wide authorization or tenant isolation.
+
+## Earlier core design notes
+
 # LuxLeaf Glass UI: architecture
 
 ```text

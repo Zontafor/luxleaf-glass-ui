@@ -1,0 +1,66 @@
+[
+  {
+    "name": "base64-arraybuffer",
+    "version": "1.0.2",
+    "license": "MIT",
+    "notices": [
+      "third_party/base64-arraybuffer-1.0.2/LICENSE"
+    ]
+  },
+  {
+    "name": "css-line-break",
+    "version": "2.1.0",
+    "license": "MIT",
+    "notices": [
+      "third_party/css-line-break-2.1.0/LICENSE"
+    ]
+  },
+  {
+    "name": "html2canvas",
+    "version": "1.4.1",
+    "license": "MIT",
+    "notices": [
+      "third_party/html2canvas-1.4.1/LICENSE"
+    ]
+  },
+  {
+    "name": "react",
+    "version": "19.3.1",
+    "license": "MIT",
+    "notices": [
+      "third_party/react-19.3.1/LICENSE"
+    ]
+  },
+  {
+    "name": "react-dom",
+    "version": "19.3.1",
+    "license": "MIT",
+    "notices": [
+      "third_party/react-dom-19.3.1/LICENSE"
+    ]
+  },
+  {
+    "name": "scheduler",
+    "version": "0.28.0",
+    "license": "MIT",
+    "notices": [
+      "third_party/scheduler-0.28.0/LICENSE"
+    ]
+  },
+  {
+    "name": "text-segmentation",
+    "version": "1.0.3",
+    "license": "MIT",
+    "notices": [
+      "third_party/text-segmentation-1.0.3/LICENSE"
+    ]
+  },
+  {
+    "name": "utrie",
+    "version": "1.0.2",
+    "license": "MIT",
+    "notices": [
+      "third_party/utrie-1.0.2/LICENSE"
+    ]
+  }
+]

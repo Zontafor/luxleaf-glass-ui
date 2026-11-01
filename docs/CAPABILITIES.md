@@ -1,20 +1,21 @@
-# Supported scope and comparison
+# Capability matrix — v0.2.0
 
-This is a LuxLeaf product, not a renamed fork or drop-in upstream replacement. Similarity in purpose does not imply API, visual, performance or ecosystem parity.
+### Optical foundation
 
-| Capability | Implementation and evidence |
-|---|---|
-| Live glass panels/buttons | React and imperative APIs; DOM tests verify filters, updates and disposal. |
-| Native keyboard and disabled semantics | Native button element; SSR and browser checks. Host supplies suitable focus/contrast styling. |
-| Configurable blur/tint/shape | Validated options, live control demo and round-trip presets. |
-| Refraction | Local SVG enhancement; visual result varies by browser. |
-| Captured-page WebGL refraction | Not implemented; architecture uses native backdrop composition. |
-| Original project's full optical behavior | No drop-in or pixel-parity claim. |
+The complete 13-file MIT reference is preserved. `/webgl` adapts its actual Container/Button shaders and parent-texture sampling; this is an optical renderer, not only CSS backdrop blur.
 
-## Release acceptance
+### LuxLeaf controls
 
-A v0.1 release requires passing type checks, unit tests, production build, package-content review, a fresh package consumer import and the documented browser checks. The private repository must contain source, demo, lockfile, CI, notices and architecture documentation. A release tag must point to the reviewed source commit.
+Validated optical ranges, typed exports, a React adapter, keyboard interaction, disabled state, hierarchy cycle checks, explicit capture, context recovery and GPU/listener/timer disposal.
 
-## Before a broader production rollout
+### Two rendering paths
 
-Validate the host application's accessibility and authorization independently. Test the actual target Chrome, Safari, Firefox, mobile and GPU fleet. Establish measured frame-time and memory budgets under intended concurrency. Add browser checks to the organization's browser CI infrastructure. No load/SLA, cross-browser certification, independent security audit or exact upstream parity is claimed by this initial release.
+The original CSS glass components remain available for ordinary UI. Optical surfaces use explicit permitted backdrop capture and exclude common editable/private elements.
+
+### Remaining host verification
+
+Backdrop capture is not a confidentiality boundary: the host must choose a permitted capture root. Cross-browser pixel equivalence, arbitrary nested reparenting and performance at high surface counts are not certified.
+
+## What completeness means here
+
+The scoped implementation, source distribution, tests and examples are reviewable in this repository. Preserving a full foundation tree does not mean every upstream application was reimplemented, every platform tested, or upstream authorship transferred. This release does not claim exact repository/API/visual parity or enterprise certification.
