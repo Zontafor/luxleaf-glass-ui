@@ -4,9 +4,13 @@
 
 [Quick start](#quick-start) · [Usage](#usage) · [Nested surfaces](#nested-surfaces) · [Controls](#controls) · [Verification](#verification)
 
-![Original glass demo with warp enabled and blur adjusted](.luxleaf/images/glass-controls.jpg)
+## Demo video
 
-*Actual local run of the restored demo. The original [README](UPSTREAM.md), [animated example](demo.gif) and MIT notices are retained.*
+[![Glass UI motion demonstration](.luxleaf/media/glass-ui-motion.gif)](.luxleaf/media/glass-ui-motion.mp4)
+
+**[Watch MP4](.luxleaf/media/glass-ui-motion.mp4)** · [Original WebM recording](.luxleaf/media/glass-ui-motion.webm) · [Run and reproduce the demo](.luxleaf/motion/README.md)
+
+Rounded and circular glass lenses move over a geometric backdrop using the actual licensed Container shader, including curved-rim refraction and blur. This is a new LuxLeaf composition recorded from the live canvas, not the preserved upstream GIF. The original [README](UPSTREAM.md) and license notices remain available.
 
 The complete pinned implementation is available on public `main`, with its original package names, source and license notices. The previously published `@zontafor/luxleaf-glass-ui` package is a separate earlier implementation; its [historical package guide](https://github.com/Zontafor/luxleaf-glass-ui/blob/8c3b9d6f2eec14eb27a4ae8b370fb89847387425/README.md) is preserved at that revision. This restoration does not publish a new registry package.
 

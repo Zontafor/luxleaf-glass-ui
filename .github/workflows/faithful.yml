@@ -22,3 +22,7 @@ jobs:
           node --check button.js
           node --check controls.js
           node --check demo.js
+      - name: Check LuxLeaf motion demonstration syntax
+        run: |
+          node --check .luxleaf/motion/app.js
+          node --check .luxleaf/motion/capture.js

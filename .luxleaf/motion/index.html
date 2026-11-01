@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>LuxLeaf Glass UI — Optical motion</title
+  ><link rel="stylesheet" href="style.css" /><link
+    rel="stylesheet"
+    href="../../glass.css"
+  /><style>
+    #output {
+      width: 960px;
+      max-width: 100%;
+      border-radius: 18px;
+    }
+    .render-host {
+      position: fixed;
+      left: -3000px;
+      top: 0;
+    }
+    .glass-container {
+      width: 310px;
+      height: 185px;
+    }
+    .small {
+      width: 190px;
+      height: 190px;
+    }
+  </style>
+  <main>
+    <header>LUXLEAF <span>GLASS UI / OPTICAL MOTION</span></header>
+    <h1>Light through glass.</h1>
+    <p>Moving lenses over a fixed geometric backdrop.</p>
+    <canvas
+      id="output"
+      width="960"
+      height="540"
+      aria-label="Animated optical glass composition"
+    ></canvas>
+    <section>
+      <button id="pause">Pause motion</button
+      ><button id="record">Record video</button
+      ><span role="status">Preparing glass renderer…</span>
+    </section>
+    <footer>
+      Actual licensed glass shader. LuxLeaf backdrop, composition and canvas
+      capture.
+    </footer>
+  </main>
+  <div class="render-host" id="host"></div>
+  <script src="../../container.js"></script>
+  <script type="module" src="app.js"></script>
+</html>
